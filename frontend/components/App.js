@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import Form from './Form'
 
 const URL = 'http://localhost:9000/api/todos'
 
@@ -8,7 +9,6 @@ export default class App extends React.Component {
   state = {
     todos: [],
     message: '',
-    input: '',
   }
 
   fetchTodo = () => {
@@ -38,8 +38,7 @@ export default class App extends React.Component {
       console.log(res)
       this.setState({
         message: res.data.message,
-        todos: [...this.state.todos, res.data.data],
-        input: ''
+        todos: [...this.state.todos, res.data.data]
       })
     })
     .catch(err => {
@@ -49,16 +48,9 @@ export default class App extends React.Component {
     })
   }
 
-  handleChange = (e) => {
-    this.setState({
-      input: e.target.value
-    })
-  }
+  
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.postNewTodo(this.state.input)
-  }
+  
 
   render() {
     return (
@@ -71,14 +63,7 @@ export default class App extends React.Component {
             })
           }
         </ul>
-        <form onSubmit={this.handleSubmit}>
-          <input 
-          value={this.state.input}
-          placeholder='add new todo'
-          onChange={this.handleChange}
-          />
-          <button>Submit</button>
-        </form>
+       <Form postNewTodo={this.postNewTodo}/>
       </div>
     )
   }

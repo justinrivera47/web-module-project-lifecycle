@@ -35,7 +35,12 @@ export default class App extends React.Component {
   handleAddTodo = (todo) => {
     axios.post(URL, todo)
     .then(res => console.log(res))
-    .catch(err => console.log({err}))
+    .catch(err => {
+      this.setState({
+        ...this.state,
+        message: err.response.data.message
+      })
+    })
   }
 
   handleChange = (e) => {
@@ -47,6 +52,11 @@ export default class App extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    this.handleAddTodo(this.state.input)
+    this.setState({
+      ...this.state,
+      input: '',
+    })
   }
 
   render() {

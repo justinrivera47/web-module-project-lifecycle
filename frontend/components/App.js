@@ -32,31 +32,32 @@ export default class App extends React.Component {
     this.fetchTodo()
   }
 
-  handleAddTodo = (todo) => {
-    axios.post(URL, todo)
-    .then(res => console.log(res))
+  postNewTodo = (todo) => {
+    axios.post(URL, {name: todo})
+    .then(res => {
+      console.log(res)
+      this.setState({
+        message: res.data.message,
+        todos: [...this.state.todos, res.data.data],
+        input: ''
+      })
+    })
     .catch(err => {
       this.setState({
-        ...this.state,
-        message: err.response.data.message
+        message: err.message
       })
     })
   }
 
   handleChange = (e) => {
     this.setState({
-      ...this.state,
       input: e.target.value
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.handleAddTodo(this.state.input)
-    this.setState({
-      ...this.state,
-      input: '',
-    })
+    this.postNewTodo(this.state.input)
   }
 
   render() {

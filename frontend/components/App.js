@@ -8,12 +8,12 @@ export default class App extends React.Component {
   state = {
     todos: [],
     message: '',
+    input: '',
   }
 
   fetchTodo = () => {
     axios.get(URL)
     .then(res => {
-      console.log(res.data.data)
       this.setState({
         ...this.state,
         todos: res.data.data,
@@ -32,6 +32,19 @@ export default class App extends React.Component {
     this.fetchTodo()
   }
 
+  handleAddTodo = (todo) => {
+    axios.post(URL, todo)
+    .then(res => console.log(res))
+    .catch(err => console.log({err}))
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      ...this.state,
+      input: e.target.value
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
   }
@@ -48,7 +61,11 @@ export default class App extends React.Component {
           }
         </ul>
         <form onSubmit={this.handleSubmit}>
-          <input />
+          <input 
+          value={this.state.input}
+          placeholder='add new todo'
+          onChange={this.handleChange}
+          />
           <button>Submit</button>
         </form>
       </div>
